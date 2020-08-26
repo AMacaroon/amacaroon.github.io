@@ -35,7 +35,7 @@
     <script>
         var rewriteArticle = function(e){
             $.ajax({
-                url: "https://amacaroon.github.io/api",
+                url: "http://localhost/~vaidas/article-rewriter-api/rewrite",
                 data: { 'text': $('.needs-rewrite').val() },
                 dataType: 'JSON',
                 type: 'POST'

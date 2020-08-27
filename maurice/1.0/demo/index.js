@@ -1,14 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const inputField = document.getElementById("input")
-    inputField.addEventListener("keydown", fname(e)) {
-        if (e.code === "Enter") {
-        let input = document.getElementById("input").value;
+document.onkeyup = function(e) {
+	if (e.which == 13) {
+		let input = document.getElementById("input").value;
         document.getElementById("user").innerHTML = input;
-        output(input);    
-     }
-  });
-});
-function fname () {
+        output(input);   
+  }
+};
+function() {
 
 //remove all characters except word characters, space, and digits
   let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");

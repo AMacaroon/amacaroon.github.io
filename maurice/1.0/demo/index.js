@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const inputField = document.getElementById("input")
-    inputField.addEventListener("keydown", fname(e) {
+    inputField.addEventListener("keydown", fname(e)) {
         if (e.code === "Enter") {
         let input = document.getElementById("input").value;
         document.getElementById("user").innerHTML = input;

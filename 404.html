@@ -19,11 +19,14 @@ layout: default
 <div class="container">
   <h1>404</h1>
 
-  <p id="pnf1"><strong>Page not found :(</strong></p>
-  <p id="pnf1">The requested page could not be found.</p>
+  <p id="pnf1"><strong></strong></p>
+  <p id="pnf2"></p>
 </div>
 <script>
   if(window.location.href.startsWith("https://amacaroon.github.io/maurice/api")){
     alert("API")
 }
+  else{
+    document.getElementById("pnf1").textContent = "Page not found :("
+    document.getElementById("pnf2").textContent = "The requested page could not be found."
 </script>

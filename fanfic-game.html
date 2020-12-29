@@ -1,59 +1,11 @@
 <!DOCTYPE html>
 <html>
-<script src="https://unpkg.com/socket.io@3.0.4/dist/index.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('http://localhost:8080');
+var socket = io.connect();
 
-    socket.on('connect', function (){
-        socket.emit('adduser', prompt("What's your name?"));
-    });
-
-    var userList = [];
-
-    socket.on('update', function (users){
-        userList = users;
-        $('#user').empty();
-        for(var i=0; i<userList.length; i++) {
-            $('#user').append("<h1>" + userList[i] + "</h1>"); 
-        }
-    });
-</script>
-<script>
-var users = [];
-
-app.get('/', function (req, res) {
-
-res.sendfile(__dirname + '/test.html');
-    });
-
-io.sockets.on('connection', function (socket) {
-
-    socket.on('adduser', function (user) {
-        socket.user = user;
-        users.push(user);
-        updateClients();
-    });
-
-    socket.on('disconnect', function () {
-        for(var i=0; i<users.length; i++) {
-            if(users[i] == socket.user) {
-                delete users[users[i]];
-            }
-        }
-        updateClients(); 
-    });
-
-    function updateClients() {
-        io.sockets.emit('update', users);
-    }
-
+socket.on('userCount', function (data) {
+  console.log(data.userCount);
 });
 	</script>
-<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
-    <b>Users</b>
-    <div id="users">
-        <p id="user"></p>
-    </div>
-</div>
 </html>

@@ -1,44 +1,59 @@
 <!DOCTYPE html>
 <html>
-	<script src="https://unpkg.com/socket.io@3.0.4/dist/index.js"></script>
-	<head>
-		<title> Real time multi-player games with HTML5</title>
-		<style type="text/css">
-			html , body {
-				background: #212121; 
-				color: #fff; 
-				margin: 0; 
-				padding: 0;
-			}
-			#canvas {
-				position: absolute;
-				left: 0; right: 0; top: 0; bottom: 0; 
-				margin: auto;
-			}
-		</style>
-	 	
-		 	<!-- Notice the URL, this is handled by socket.io on the server automatically, via express -->
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		
-			<!-- This will create a connection to socket.io, and print the user serverid that we sent from the server side. --> 
-		<script type="text/javascript">
+<script src="https://unpkg.com/socket.io@3.0.4/dist/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script>
+    var socket = io.connect('http://localhost:8080');
 
-				//This is all that needs
-			var socket = io.connect('/');
+    socket.on('connect', function (){
+        socket.emit('adduser', prompt("What's your name?"));
+    });
 
-				//Now we can listen for that event
-			socket.on('onconnected', function( data ) {
+    var userList = [];
 
-					//Note that the data is the object we sent from the server, as is. So we can assume its id exists. 
-		  		console.log( 'Connected successfully to the socket.io server. My server side ID is ' + data.id );
+    socket.on('update', function (users){
+        userList = users;
+        $('#user').empty();
+        for(var i=0; i<userList.length; i++) {
+            $('#user').append("<h1>" + userList[i] + "</h1>"); 
+        }
+    });
+</script>
+<script>
+var users = [];
 
-		  	});
+app.get('/', function (req, res) {
 
-		</script>
+res.sendfile(__dirname + '/test.html');
+    });
 
-	</head>
+io.sockets.on('connection', function (socket) {
 
-	<body>
-		<canvas id="canvas"> </canvas>	
-	</body>
+    socket.on('adduser', function (user) {
+        socket.user = user;
+        users.push(user);
+        updateClients();
+    });
+
+    socket.on('disconnect', function () {
+        for(var i=0; i<users.length; i++) {
+            if(users[i] == socket.user) {
+                delete users[users[i]];
+            }
+        }
+        updateClients(); 
+    });
+
+    function updateClients() {
+        io.sockets.emit('update', users);
+    }
+
+});
+	</script>
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+    <b>Users</b>
+    <div id="users">
+        <p id="user"></p>
+    </div>
+</div>
 </html>

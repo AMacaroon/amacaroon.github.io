@@ -1,0 +1,23 @@
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+<script>
+var usemess = window.location.href.substring((window.location.href.indexOf("?message="))
+usemess = usemess.substring(8)
+alert(usemess);
+const threshold = 0.9;
+
+// Load the model. Users optionally pass in a threshold and an array of
+// labels to include.
+toxicity.load(threshold).then(model => {
+  const sentences = ['you suck'];
+
+  model.classify(sentences).then(predictions => {
+    // `predictions` is an array of objects, one for each prediction head,
+    // that contains the raw probabilities for each input along with the
+    // final prediction in `match` (either `true` or `false`).
+    // If neither prediction exceeds the threshold, `match` is `null`.
+
+    console.log(predictions);
+  });
+});
+</script>

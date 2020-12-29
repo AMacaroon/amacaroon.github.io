@@ -2,13 +2,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
 <script>
 var usemess = window.location.href.substring(47)
-alert(usemess);
 const threshold = 0.9;
 
 // Load the model. Users optionally pass in a threshold and an array of
 // labels to include.
 toxicity.load(threshold).then(model => {
-  const sentences = ['you suck'];
+  const sentences = [usemess];
 
   model.classify(sentences).then(predictions => {
     // `predictions` is an array of objects, one for each prediction head,

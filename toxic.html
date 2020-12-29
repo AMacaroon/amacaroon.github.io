@@ -18,7 +18,11 @@ toxicity.load(threshold).then(model => {
     // If neither prediction exceeds the threshold, `match` is `null`.
 
     console.log(predictions);
-    document.getElementById("result").textContent = predictions.toString();
+    gonum = 0;
+    while(gonum < 8){
+      document.getElementById("result").textContent += predictions[gonum].results[0].match+","
+      gonum += 1;
+    }
   });
 });
 </script>

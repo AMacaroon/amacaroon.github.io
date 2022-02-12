@@ -1,13 +1,24 @@
-oy oy m8
+oui oui mon ami
 <script>
-  fetch('https://www.perseus.tufts.edu/hopper/morph?l=vides&la=la').then(function (response) {
-	// The API call was successful!
-	return response;
-}).then(function (data) {
-	// This is the JSON from our response
-	console.log(data);
-}).catch(function (err) {
-	// There was an error
-	console.warn('Something went wrong.', err);
-});
+function httpGet(theUrl)
+{
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            return xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET", theUrl, false );
+    xmlhttp.send();    
+}
+httpGet("https://www.perseus.tufts.edu/hopper/morph?l=video&la=la")
 </script>

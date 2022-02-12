@@ -148,13 +148,15 @@
 <div class="keyb" id="K" onclick="writeLetter('K')">K</div>
 <div class="keyb" id="L" onclick="writeLetter('L')">L</div></div>
 <div class="row" id="keybrow3">
+	<div class="keyb" id="Enter" onclick="enter()">↵</div>
 <div class="keyb" id="Z" onclick="writeLetter('Z')">Z</div>
 <div class="keyb" id="X" onclick="writeLetter('X')">X</div>
 <div class="keyb" id="C" onclick="writeLetter('C')">C</div>
 <div class="keyb" id="V" onclick="writeLetter('V')">V</div>
 <div class="keyb" id="B" onclick="writeLetter('B')">B</div>
 <div class="keyb" id="N" onclick="writeLetter('N')">N</div>
-<div class="keyb" id="M" onclick="writeLetter('M')">M</div></div>
+<div class="keyb" id="M" onclick="writeLetter('M')">M</div>
+<div class="keyb" style="font-size: 50px;" id="Backspace" onclick="backSpace()">⌫</div></div>
 </center>
 <script>
 function makeHttpObject() {
@@ -218,6 +220,22 @@ document.addEventListener('keydown', (event) => {
 	  }
 	}
 }, false);
+function backSpace(){
+	if(window.parsing == 0){
+  		eval('document.getElementById("'+window.curg+'-'+window.used+'").innerHTML = ""')
+  		window.used -= 1;
+  	}
+}
+function enter(){
+	if(window.parsing == 0){
+	  	if(window.used == 5){
+	  		parseWord()
+	  	}
+	  	else{
+	  		alert("Word is not long enough")
+	  	}
+	  }
+}
 function parseWord(){
 	window.parsing = 1
 	cl = 1

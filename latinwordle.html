@@ -13,6 +13,22 @@
     border-radius: 5px;
     color: black;
 }
+.keyb{
+	width: 75px;
+	height: 70px;
+	margin-top: auto;
+	border: 2px solid;
+	font-size: 64px;
+    font-weight: 700;
+    margin: 3px;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+}
+.keyb:hover {
+  background-color: #cfd4cd;
+  color: white;
+}
 .row{
 	display: flex;
 	justify-content: center;
@@ -111,6 +127,34 @@
 <center><div class="row" id="row6">
 	<div class="letterbox" id="6-1"></div><div class="letterbox" id="6-2"></div><div class="letterbox" id="6-3"></div><div class="letterbox" id="6-4"></div><div class="letterbox" id="6-5"></div>
 </div></center>
+<center><div class="row" id="keybrow1">
+<div class="keyb" id="Q" onclick="writeLetter('Q')">Q</div>
+<div class="keyb" id="E" onclick="writeLetter('E')">E</div>
+<div class="keyb" id="R" onclick="writeLetter('R')">R</div>
+<div class="keyb" id="T" onclick="writeLetter('T')">T</div>
+<div class="keyb" id="Y" onclick="writeLetter('Y')">Y</div>
+<div class="keyb" id="U" onclick="writeLetter('U')">U</div>
+<div class="keyb" id="I" onclick="writeLetter('I')">I</div>
+<div class="keyb" id="O" onclick="writeLetter('O')">O</div>
+<div class="keyb" id="P" onclick="writeLetter('P')">P</div></div>
+<div class="row" id="keybrow2">
+<div class="keyb" id="A" onclick="writeLetter('A')">A</div>
+<div class="keyb" id="S" onclick="writeLetter('S')">S</div>
+<div class="keyb" id="D" onclick="writeLetter('D')">D</div>
+<div class="keyb" id="F" onclick="writeLetter('F')">F</div>
+<div class="keyb" id="G" onclick="writeLetter('G')">G</div>
+<div class="keyb" id="H" onclick="writeLetter('H')">H</div>
+<div class="keyb" id="K" onclick="writeLetter('K')">K</div>
+<div class="keyb" id="L" onclick="writeLetter('L')">L</div></div>
+<div class="row" id="keybrow3">
+<div class="keyb" id="Z" onclick="writeLetter('Z')">Z</div>
+<div class="keyb" id="X" onclick="writeLetter('X')">X</div>
+<div class="keyb" id="C" onclick="writeLetter('C')">C</div>
+<div class="keyb" id="V" onclick="writeLetter('V')">V</div>
+<div class="keyb" id="B" onclick="writeLetter('B')">B</div>
+<div class="keyb" id="N" onclick="writeLetter('N')">N</div>
+<div class="keyb" id="M" onclick="writeLetter('M')">M</div></div>
+</center>
 <script>
 function makeHttpObject() {
   if("XMLHttpRequest" in window)return new XMLHttpRequest();
@@ -218,11 +262,15 @@ function doColours(isreal){
 		while(cl < 6){
 			curl = document.getElementById(window.curg+"-"+cl).innerHTML
 			if(document.getElementById(window.curg+"-"+cl).style.backgroundColor == "green"){
+				document.getElementById(document.getElementById(window.curg+"-"+cl).innerHTML).style.backgroundColor = "green"
 				doneall += 1
 			}
-			else if(document.getElementById(window.curg+"-"+cl).style.backgroundColor == "gold"){}
+			else if(document.getElementById(window.curg+"-"+cl).style.backgroundColor == "gold"){
+				document.getElementById(document.getElementById(window.curg+"-"+cl).innerHTML).style.backgroundColor = "gold"
+			}
 			else{
 				document.getElementById(window.curg+"-"+cl).style.backgroundColor = "grey"
+				document.getElementById(document.getElementById(window.curg+"-"+cl).innerHTML).style.backgroundColor = "grey"
 			}
 			document.getElementById(window.curg+"-"+cl).style.color = "white"
 			cl += 1
@@ -285,6 +333,12 @@ function lose(){
 	    modal.style.display = "none";
 	  }
 	}
+}
+function writeLetter(letter){
+	if(window.parsing == 0){
+	  	eval('document.getElementById("'+window.curg+'-'+(window.used+1)+'").innerHTML = letter.toUpperCase()')
+	  	window.used += 1;
+  	}
 }
 </script>
 </html>

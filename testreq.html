@@ -1,24 +1,15 @@
 assdas
 <script>
-function httpGet(theUrl)
-{
-    if (window.XMLHttpRequest)
-    {// code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp=new XMLHttpRequest();
-    }
-    else
-    {// code for IE6, IE5
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            return xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET", theUrl, false );
-    xmlhttp.send();    
+function makeHttpObject() {
+  if("XMLHttpRequest" in window)return new XMLHttpRequest();
+	else if("ActiveXObject" in window)return new ActiveXObject("Msxml2.XMLHTTP");
 }
-console.log(httpGet("https://www.perseus.tufts.edu/hopper/morph?l=video&la=la"))
+
+var request = makeHttpObject();
+request.open("GET", "https://www.perseus.tufts.edu/hopper/morph?l=video&la=la", true);
+request.send(null);
+request.onreadystatechange = function() {
+  if (request.readyState == 4)
+    console.log(request.responseText);
+};
 </script>

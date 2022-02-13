@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <title>Latin Wordle</title>
-<script src="https://verbix-api.nyc3.cdn.digitaloceanspaces.com/conjugator/v2.0.2.js"></script>
 <style>
 .letterbox{
 	width: 64px;
@@ -106,6 +105,10 @@
     <h1 id="modalhead"></h1>
     <p style="font-size: 20px;" id="modalmeaning"></p>
     <button class="button button1" onclick="location.reload();">Play Again</button>
+    <h3>Statistics</h3>
+    <div id="statbox1" style="display: flex; width: 300px; height: 40px;"><div style="font-size: 50px; height: 30px;" id="played"></div><div style="font-size: 50px; height: 30px; margin-left: 50px;" id="won"></div><div style="font-size: 50px; height: 30px; margin-left: 65px;" id="streakbox"></div></div>
+    <div id="statbox2" style="display: flex; width: 300px; height: 50px;"><p><strong>Played</strong></p><p style="margin-left: 80px"><strong>Won</strong><p style="margin-left: 80px"><strong>Current Streak</strong></p></div>
+    <div id="myBarChart"/>
 	</center>
   </div>
 
@@ -159,6 +162,25 @@
 <div class="keyb" style="font-size: 50px;" id="Backspace" onclick="backSpace()">⌫</div></div>
 </center>
 <script>
+if(window.localStorage.getItem('guesses1') == null){
+  window.localStorage.setItem('guesses1', 0)
+}
+if(window.localStorage.getItem('guesses2') == null){
+  window.localStorage.setItem('guesses2', 0)
+}
+if(window.localStorage.getItem('guesses3') == null){
+  window.localStorage.setItem('guesses3', 0)
+}
+if(window.localStorage.getItem('guesses4') == null){
+  window.localStorage.setItem('guesses4', 0)
+}
+if(window.localStorage.getItem('guesses5') == null){
+  window.localStorage.setItem('guesses5', 0)
+}
+if(window.localStorage.getItem('guesses6') == null){
+  window.localStorage.setItem('guesses6', 0)
+}
+//alert(window.localStorage.getItem('guesses1')+", "+window.localStorage.getItem('guesses2')+", "+window.localStorage.getItem('guesses3')+", "+window.localStorage.getItem('guesses4')+", "+window.localStorage.getItem('guesses5')+", "+window.localStorage.getItem('guesses6'))
 function makeHttpObject() {
   if("XMLHttpRequest" in window)return new XMLHttpRequest();
   else if("ActiveXObject" in window)return new ActiveXObject("Msxml2.XMLHTTP");
@@ -323,10 +345,26 @@ function doColours(isreal){
 function win(){
 	window.parsing = 1
 	// Get the modal
+  if(window.localStorage.getItem('wongam') == null){
+    window.localStorage.setItem('wongam', 0);
+  }
+  window.localStorage.setItem('wongam', parseInt(window.localStorage.getItem('wongam'))+1);
+  if(window.localStorage.getItem('streak') == null){
+    window.localStorage.setItem('streak', 0);
+  }
+  window.localStorage.setItem('streak', parseInt(window.localStorage.getItem('streak'))+1);
+  try{
+    eval("curnum = window.localStorage.getItem('guesses"+curg+"')")
+    curnum = parseInt(curnum)
+    eval("window.localStorage.setItem('guesses"+curg+"', curnum+1);")
+  }
+  catch{
+    eval("window.localStorage.setItem('guesses"+curg+"', 1);")
+  }
 	var modal = document.getElementById("myModal");
 	document.getElementById("modalhead").innerHTML = "Correct!"
 	document.getElementById("modalmeaning").innerHTML = " The word was <strong>"+window.targetword+"</strong>, meaning <strong>"+window.targdef+"</strong>."
-
+  updateStats()
 	modal.style.display = "block";
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];
@@ -343,11 +381,12 @@ function win(){
 }
 function lose(){
 	window.parsing = 1
+  window.localStorage.setItem('streak', 0);
 	// Get the modal
 	var modal = document.getElementById("myModal");
 	document.getElementById("modalhead").innerHTML = "Bad Luck!"
 	document.getElementById("modalmeaning").innerHTML = " The word was <strong>"+window.targetword+"</strong>, meaning <strong>"+window.targdef+"</strong>."
-
+  updateStats()
 	modal.style.display = "block";
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];
@@ -367,6 +406,52 @@ function writeLetter(letter){
 	  	eval('document.getElementById("'+window.curg+'-'+(window.used+1)+'").innerHTML = letter.toUpperCase()')
 	  	window.used += 1;
   	}
+}
+</script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+function updateStats(){
+  if(window.localStorage.getItem('played') == null){
+    window.localStorage.setItem('played', 0);
+  }
+  window.localStorage.setItem('played', parseInt(window.localStorage.getItem('played'))+1);
+  document.getElementById("played").innerHTML = window.localStorage.getItem('played');
+  document.getElementById("streakbox").innerHTML = window.localStorage.getItem('streak');
+  wonperc = ((parseInt(window.localStorage.getItem('wongam')))/(parseInt(window.localStorage.getItem('played'))))*100
+  wonperc = Math.round(wonperc)
+  wonperc = (wonperc.toString())+"%"
+  document.getElementById("won").innerHTML = wonperc
+  google.charts.load('current', {packages: ['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // Define the chart to be drawn.
+      var data = google.visualization.arrayToDataTable([
+         ['Guesses', 'Frequency', { role: 'style' }],
+         ['1', parseInt(window.localStorage.getItem('guesses1')), 'green'],
+         ['2', parseInt(window.localStorage.getItem('guesses2')), 'green'],
+         ['3', parseInt(window.localStorage.getItem('guesses3')), 'green'],
+         ['4', parseInt(window.localStorage.getItem('guesses4')), 'green' ],
+         ['5', parseInt(window.localStorage.getItem('guesses5')), 'green' ],
+         ['6', parseInt(window.localStorage.getItem('guesses6')), 'green' ],
+      ]);
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+      var options = {
+            width: 600,
+            height: 400,
+            hAxis: { textPosition: 'none' },
+            chartArea: {top:20, bottom:20},
+      };
+      // Instantiate and draw the chart.
+      var chart = new google.visualization.BarChart(document.getElementById('myBarChart'));
+      chart.draw(view, options);
+    }
 }
 </script>
 </html>

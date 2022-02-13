@@ -420,6 +420,9 @@ function updateStats(){
   wonperc = ((parseInt(window.localStorage.getItem('wongam')))/(parseInt(window.localStorage.getItem('played'))))*100
   wonperc = Math.round(wonperc)
   wonperc = (wonperc.toString())+"%"
+  if(wonperc == "NaN%"){
+    wonperc = "0%";
+  }
   document.getElementById("won").innerHTML = wonperc
   google.charts.load('current', {packages: ['corechart']});
   google.charts.setOnLoadCallback(drawChart);

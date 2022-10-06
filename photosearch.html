@@ -1,5 +1,5 @@
 <script>
-var images = new Object();
+/*var images = new Object();
 var images = {
   "54unknown.png": "5 December 2019. Saul and Gus stand in WH Smiths during late night shopping, Gus wearing a green hoodie, carrying an excess of glacier mints. Saul is on his phone.",
   "12unknown.png": "Unknown date. Gus, Jack and Jonnie are on a Discord video call, with Groovy in the bottom-right corner.",
@@ -80,6 +80,17 @@ var images = {
   "283unknown.png": "Unknown date. Gus is sitting in a black hoodie on a sofa in an unknown location. He has been photoshopped so his face is a lot smaller than his head, for comic effect, haha.",
   "282unknown.png": "24 April 2022. Rhys, Gus, Jack and Jonnie on the Kingston Ridge (the downs) walking in a line, a la the Beatles on the Abbey Road cover. (Luca would later edit this into 'Cummy road' by 'the skeetles'.) Rhys has been photoshopped to be rather transparent, similar to 276unknown.png. Him and jack are wearing similar blue coats, and Jonnie and Gus are both wearing black. Gus is bending over and appears to be trying to stick his finger up Jack's bum.",
  
+*/
+<script>
+function printRepoCount() {
+  var responseObj = JSON.parse(this.responseText);
+  console.log(responseObj.name + " has " + responseObj.public_repos + " public repositories!");
+}
+var request = new XMLHttpRequest();
+request.onload = printRepoCount;
+request.open('get', 'https://api.github.com/users/funchal', true)
+request.send()
+</script>
 
   
 
